@@ -1,0 +1,88 @@
+﻿@model IEnumerable<EmployeeInfo>
+<link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+
+
+@using (Html.BeginForm("Index", "Employee", FormMethod.Post))
+{
+<div class="row">
+
+    @Html.AntiForgeryToken()
+    <div class="col-md-3">
+        @Html.TextBox("SearchString",null,new {  @class = "form-control" ,placeholder="Enter First name here.."})
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownList("DepList", (IEnumerable<SelectListItem>)ViewBag.DepList, "-- Select Department --", new { id = "ddlDep", @class = "form-control" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownList("SubDepList", (IEnumerable<SelectListItem>)ViewBag.subDepSelectList, "-- Select Sub Department --", new { id = "ddlSubDep", @class = "form-control" })
+    </div>
+
+    <div class="col-md-3">
+        <input type="submit" value="Search" class="form-control btn-primary"  />
+    </div>
+</div>
+        }
+
+
+        <br />
+        @if (Model.Any())
+        {
+            @foreach (var DeptGroup in Model.GroupBy(x => x.DepartmentName))
+            {
+                <span class="h3" style="font-size:large;color:green">@DeptGroup.Key</span>
+                <hr />
+
+                @* @foreach (var emp in DeptGroup)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="media">
+                                    <img class="align-self-start mr-3" src="@Url.Content("~/images/andrea.jpg")" />
+                                    <div class="media-body">
+                                        <h4 class="mt-0" style="font-size:large;color:lightgreen">@emp.FirstName @emp.LastName</h4>
+                                        <h6 class="mt-0">@emp.SubDepartmentName</h6>
+                                        <p style="font-size:small">@emp.Bio</p>
+                                        <div class="row"></div>
+                                        <a href="Url.Content(@emp.TwitterProfileLink)"><i class="fab fa-twitter-square" style="color: #8c8585;"></i></a>
+                                        <a href="Url.Content(@emp.FBProfileLink)">
+                                            <i class="fab fa-facebook-square" style="color: #8c8585;"></i>
+
+                                        </a>
+                                        <div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }*@
+
+                <div class="row">
+                    @foreach (var emp in DeptGroup)
+                    {
+                        <div class="col-md-6">
+                            <div class="media">
+                                <img class="align-self-start mr-3" src="~/images/@Url.Content(emp.ProfileImage)"  style="height:150px;width:150px;border-radius: 100%; " />
+                                <div class="media-body">
+                                    <h4 class="mt-0" style="font-size:large;color:lightgreen">@emp.FirstName @emp.LastName</h4>
+                                    <h6 class="mt-0">@emp.SubDepartmentName</h6>
+                                    <p style="font-size:small">@emp.Bio</p>
+                                    <div class="row"></div>
+                                    <a href="@Url.Content(@emp.TwitterProfileLink)"><i class="fab fa-twitter-square" style="color: #8c8585;"></i></a>
+                                    <a href="@Url.Content(@emp.FBProfileLink)">
+                                        <i class="fab fa-facebook-square" style="color: #8c8585;"></i>
+
+                                    </a>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            }
+        }
+
+
+
